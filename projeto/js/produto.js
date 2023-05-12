@@ -11,7 +11,7 @@ alert("teste");
                 acao : "alterar",
                 nome: $("#nomeup").val(),
                 descricao: $("#descricaoup").val(),
-                fk_id_tipoProduto: $("#tipoProdutosup").val() ,
+                fk_id_tipoEmpresa: $("#tipoEmpresasup").val() ,
                 id: $("#idProdutosup").val()
             },
             success: function(resultado){
@@ -20,7 +20,7 @@ alert("teste");
                 atualizarTabela();
                 $("#nomeup").val("");
                 $("#descricaoup").val("");
-                $("#tipoProdutoup").val("1");
+                $("#tipoEmpresaup").val("1");
                 $("#idprodutoup").val("");
             }
         });
@@ -39,7 +39,7 @@ alert("teste");
                 var produto = resposta[0];
                 $("#nomeup").val(produto.nome);
                 $("#descricaoup").val(produto.descricao);
-                $("#tipoProdutoup").val(produto.fk_id_tipoproduto)
+                $("#tipoEmpresaup").val(produto.fk_id_tipoempresa)
                 $("#idProdutoup").val(produto.id);
                 $("#myModal").modal("show");
             }
@@ -71,7 +71,7 @@ confirm("Você deseja excluir o "+$(this).attr("idProduto")+"?",
             data:{
                 nome: $("#nome").val() ,
                 descricao:  $("#descricao").val() ,
-                fk_id_tipoproduto: $("#tipoProduto").val(),
+                fk_id_tipoempresa: $("#tipoEmpresa").val(),
                 acao : "inserir"
             },
             success: function(result){
@@ -86,23 +86,23 @@ confirm("Você deseja excluir o "+$(this).attr("idProduto")+"?",
 
 function carregarTipos(){
     $.ajax({
-        url: "controle/tipoprodutocontrole.php",
+        url: "controle/tipoempresacontrole.php",
         type: "POST",
         data:{
             acao : "pegarTipos"
         },
         success: function(result){
             var lista = JSON.parse(result);
-            $("#tipoProduto").html("");
+            $("#tipoEmpresa").html("");
             for(i=0; i< lista.length; i++){
                 var opcao = "<option value='"+lista[i].id+"'>"+lista[i].nome+"</option>";
-                $("#tipoProduto").append(opcao);
+                $("#tipoEmpresa").append(opcao);
             }
 
-            $("#tipoProdutoup").html("");
+            $("#tipoEmpresaup").html("");
             for(i=0; i< lista.length; i++){
                 var opcao = "<option value='"+lista[i].id+"'>"+lista[i].nome+"</option>";
-                $("#tipoProdutoup").append(opcao);
+                $("#tipoEmpresaup").append(opcao);
             }
 
         }

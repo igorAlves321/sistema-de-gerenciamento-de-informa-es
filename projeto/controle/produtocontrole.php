@@ -26,7 +26,7 @@
         function inserir(){
             $this->produto->nome = $_POST["nome"];
             $this->produto->descricao = $_POST["descricao"];
-            $this->produto->fk_id_tipoproduto = $_POST["fk_id_tipoproduto"];
+            $this->produto->fk_id_tipoempresa = $_POST["fk_id_tipoempresa"];
 
             $this->produto->inserir();
 
@@ -35,7 +35,7 @@
             $this->produto->nome = $_POST["nome"];
             $this->produto->descricao = $_POST["descricao"];
             $this->produto->id = $_POST["id"];
-            $this->produto->fk_id_tipoproduto = $_POST["fk_id_tipoproduto"];
+            $this->produto->fk_id_tipoempresa = $_POST["fk_id_tipoempresa"];
 
             $this->produto->alterar();
         }

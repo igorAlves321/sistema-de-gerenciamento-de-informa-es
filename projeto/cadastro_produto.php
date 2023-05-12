@@ -30,7 +30,7 @@
         </div>
         <div class="mb-3 mt-3">
 
-        <select id="tipoProduto"  class="form-select mb-3" > 
+        <select id="tipoEmpresa"  class="form-select mb-3" > 
         </select>
         <button  type="button" class="btn btn-info" id="btnCadastrar">Cadastrar</button>
         <table class="table">

@@ -3,7 +3,7 @@
         public $id;
         public $nome;
         public $descricao;
-        public $fk_id_tipoProduto;
+        public $fk_id_tipoempresa;
 
         public $pdo;
 
@@ -16,11 +16,11 @@
                 ":nome" => $this->nome,
                 ":descricao" => $this->descricao,
 
-                ":fk_id_tipoproduto" => $this->fk_id_tipoproduto,
+                ":fk_id_tipoempresa" => $this->fk_id_tipoempresa,
 
             );
-            $stmt = Conexao::$conn->prepare('insert into produto (nome, descricao, fk_id_tipoproduto) 
-                    values (:nome, :descricao, :fk_id_tipoproduto)');
+            $stmt = Conexao::$conn->prepare('insert into produto (nome, descricao, idempresa) 
+                    values (:nome, :descricao, :fk_id_tipoempresa)');
             $stmt->execute($parametros);
         }
 
@@ -28,17 +28,17 @@
             $parametros = Array(
                 ":nome" => $this->nome,
                 ":descricao" => $this->descricao,
-                ":fk_id_tipoproduto" => $this->fk_id_tipoproduto,
+                ":fk_id_tipoempresa" => $this->fk_id_tipoempresa,
                 ":id" => $this->id
             );
             $stmt = Conexao::$conn->prepare('
             update produto set nome = :nome, descricao = :descricao,
-            fk_id_tipoproduto = :fk_id_tipoproduto where id = :id');
+            fk_id_tipoempresa = :fk_id_tipoempresa where id = :id');
             $stmt->execute($parametros);
         }
 
         function pegarTodos(){
-            $stmt = Conexao::$conn->prepare('select p.*, tp.nome as nometipo from produto p join tipoproduto tp on tp.id = p.fk_id_tipoproduto ');
+            $stmt = Conexao::$conn->prepare('select p.*, tp.nome as nometipo from produto p join tipoempresa tp on tp.id = p.idempresa ');
             $stmt->execute();
             return json_encode($stmt->fetchAll(PDO::FETCH_ASSOC));
         }

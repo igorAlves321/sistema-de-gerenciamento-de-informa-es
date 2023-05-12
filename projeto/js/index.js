@@ -12,8 +12,8 @@ alert("oioioi");
                 nome: $("#nomeup").val(),
                 telefone: $("#telefoneup").val(),
                 email: $("#emailup").val() ,
-                senha: $("#senhaup").val() ,
-                fk_id_tipoEmpresa: $("#tipoEmpresasup").val() ,
+                //senha: $("#senhaup").val() ,
+                fk_id_tipoEmpresa: $("#tipoEmpresaup").val() ,
                 id: $("#idEmpresasup").val()
             },
             success: function(resultado){
@@ -23,7 +23,7 @@ alert("oioioi");
                 $("#nomeup").val("");
                 $("#telefoneup").val("");
                 $("#emailup").val("");
-                $("#senhaup").val("");
+                //$("#senhaup").val("");
                 $("#tipoEmpresaup").val("1");
                 $("#idEmpresaup").val("");
             }
@@ -53,8 +53,9 @@ alert("oioioi");
     });
 
     $("#corpoTabela").on("click" , ".btnExcluir", function(){
-confirm("Você deseja excluir o "+$(this).attr("idEmpresa")+"?",
+alertify.confirm("Você deseja excluir o " + $(this).attr("idEmpresa") + "?",
         ()=>{
+            console.log("aaaa");
             $.ajax({
                 url: "controle/empresacontrole.php",
                 type: "POST",
@@ -63,10 +64,13 @@ confirm("Você deseja excluir o "+$(this).attr("idEmpresa")+"?",
                     acao : "excluir"
                 },
                 success: function(result){
+                    console.log(result);
                     atualizarTabela();
                 }
             });
-        });
+        },
+        ()=>{}
+        );
         /**/
     });
 

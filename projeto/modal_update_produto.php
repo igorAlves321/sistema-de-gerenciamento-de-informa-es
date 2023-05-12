@@ -20,7 +20,7 @@
                     </div>
                     <div class="mb-3 mt-3">
 
-                    <select id="tipoProdutoup"  class="form-select mb-3" > 
+                    <select id="tipoEmpresaup"  class="form-select mb-3" > 
                     </select>
                 </div>
                 <!-- Modal footer -->

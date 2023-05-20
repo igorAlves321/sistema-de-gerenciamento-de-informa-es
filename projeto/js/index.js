@@ -1,5 +1,5 @@
 $(document).ready(function() {
-  atualizarTabela();
+
   carregarTipos();
 
   $("#btnPesquisar").click(function() {
@@ -92,6 +92,10 @@ function pesquisarEmpresas(nomeEmpresa) {
         for (var i = 0; i < lista.length; i++) {
           var linha = "<tr>";
           linha += "<td>" + lista[i].nome + "</td>";
+
+
+
+
           linha += "<td>" + lista[i].telefone + "</td>";
           linha += "<td>" + lista[i].email + "</td>";
           linha += "<td>" + lista[i].senha + "</td>";
@@ -107,6 +111,7 @@ function pesquisarEmpresas(nomeEmpresa) {
             lista[i].id +
             "'><span class='oi oi-loop-circular' title='icon name' aria-hidden='true'></span></button></td>";
           linha += "</tr>";
+
           $("#corpoTabela").append(linha);
         }
       }

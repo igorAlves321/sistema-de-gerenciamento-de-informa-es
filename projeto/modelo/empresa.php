@@ -53,6 +53,13 @@
             $stmt->execute($parametros);
         }
 
+        function buscarPorNome($nome){
+            $stmt = Conexao::$conn->prepare('SELECT * FROM empresa WHERE nome LIKE :nome');
+            $stmt->bindValue(':nome', '%' . $nome . '%');
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
         function pegarPorId(){
             $parametros = Array(
                 ":id" => $this->id

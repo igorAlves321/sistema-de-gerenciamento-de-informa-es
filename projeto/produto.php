@@ -1,4 +1,7 @@
-<?php session_start();?>
+<?php
+    include_once("testelogin.php");
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,29 +12,24 @@
     <link href="open-iconic/font/css/open-iconic-bootstrap.css" rel="stylesheet">
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.min.css"/>
-    <title>Document</title>
+    <title>Página Do produto</title>
 </head>
 <body>
     <div class="container-fluid">
-        <?php include_once("modal_update_produto.php"); ?>
         <div class="row">
             <div class="col-2"></div>
             <div class="col-12 col-sm-8">
-                <h1>Olá <?php echo $_SESSION["nome"]; ?></h1>
-                <a href="sair.php">Sair</a>
-                <div class="mb-3 mt-3">
-                    <label for="nome" class="form-label">Nome:</label>
-                    <input type="text" class="form-control" id="nome" 
-                                        placeholder="Digite o nome do produto">
+                <h1 class="text-center text-primary">Olá <?php echo $_SESSION["nome"]; ?></h1>
+                <a href="sair.php" class="btn btn-danger d-block mx-auto">Sair</a>
+
+                <div class="mt-3">
+                    <h2 class="text-center">Opções</h2>
+                    <ul class="list-group">
+                        <li class="list-group-item"><a href="cadastro_produto.php" class="btn btn-primary d-block mx-auto">Cadastrar Produto</a></li>
+                        <li class="list-group-item"><a href="ver_produtos_cadastrados.php" class="btn btn-primary d-block mx-auto">Ver Produtos Cadastrados</a></li>
+                    </ul>
                 </div>
-                <div class="mb-3 mt-3">
-                    <label for="descricao" class="form-label">Descricao:</label>
-                    <input type="text" class="form-control" id="descricao" placeholder="Digite uma descrição para o produto">
-                </div>
-                <select id="tipoEmpresa"  class="form-select mb-3" > 
-                </select>
-                <button type="button" class="btn btn-info mb-3" id="btnCadastrar">Cadastrar</button>
-                <!-- Botão de voltar adicionado -->
+
                 <div class="text-center mt-4">
                     <a href="index.php" class="btn btn-primary">Voltar</a>
                 </div>
@@ -42,6 +40,6 @@
     <script src="js/jquery.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
-    <script src="js/index.js"></script>
+    <script src="js/produto.js"></script>
 </body>
 </html>

@@ -1,6 +1,6 @@
 <?php
     class Produto{
-        public $id;
+        public $idproduto;
         public $nome;
         public $descricao;
         public $fk_id_tipoempresa;
@@ -15,7 +15,6 @@
             $parametros = Array(
                 ":nome" => $this->nome,
                 ":descricao" => $this->descricao,
-
                 ":fk_id_tipoempresa" => $this->fk_id_tipoempresa,
 
             );
@@ -29,54 +28,47 @@
                 ":nome" => $this->nome,
                 ":descricao" => $this->descricao,
                 ":fk_id_tipoempresa" => $this->fk_id_tipoempresa,
-                ":id" => $this->id
+                ":idproduto" => $this->idproduto
             );
             $stmt = Conexao::$conn->prepare('
             update produto set nome = :nome, descricao = :descricao,
-            fk_id_tipoempresa = :fk_id_tipoempresa where id = :id');
+            fk_id_tipoempresa = :fk_id_tipoempresa where idproduto = :idproduto');
             $stmt->execute($parametros);
         }
 
         function pegarTodos(){
-            $stmt = Conexao::$conn->prepare('select p.*, tp.nome as nometipo from produto p join tipoempresa tp on tp.id = p.idempresa ');
+            $stmt = Conexao::$conn->prepare('select p.*, tp.nome as nometipo from produto p join tipoempresa tp on tp.idproduto = p.idempresa ');
             $stmt->execute();
             return json_encode($stmt->fetchAll(PDO::FETCH_ASSOC));
         }
 
         function excluir(){
             $parametros = Array(
-                ":id" => $this->id
+                ":idproduto" => $this->idproduto
             );
-            $stmt = Conexao::$conn->prepare('delete from produto where id = :id');
+            $stmt = Conexao::$conn->prepare('delete from produto where idproduto = :idproduto');
             $stmt->execute($parametros);
         }
 
         function pegarPorId(){
             $parametros = Array(
-                ":id" => $this->id
+                ":idproduto" => $this->idproduto
             );
-            $stmt = Conexao::$conn->prepare('select p.* from produto p where id = :id ');
+            $stmt = Conexao::$conn->prepare('select p.* from produto p where idproduto = :idproduto ');
             $stmt->execute($parametros);
             return json_encode($stmt->fetchAll(PDO::FETCH_ASSOC));
         }
 
-        function logar(){
+        function pesquisarProduto($nome){
             $parametros = Array(
-                ":nome" => $this->nome,
-                ":descricao" => $this->descricao,
+                ":nome" => '%'.$nome.'%'
             );
             $stmt = Conexao::$conn->prepare('select * from produto 
-            where nome = :nome and descricao = :descricao ');
+            where nome like :nome');
             $stmt->execute($parametros);
-            $resultado = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            if( count($resultado) > 0){
-                $_SESSION["logado"] = "1";
-                $_SESSION["nome"] = $resultado[0]["nome"];
-                return "1";
-            }else{
-                return "0";
-            }
+            return json_encode($stmt->fetchAll(PDO::FETCH_ASSOC));
         }
-    }
+   }
+    
 
 ?>

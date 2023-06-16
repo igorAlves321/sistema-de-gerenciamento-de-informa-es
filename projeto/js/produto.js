@@ -1,9 +1,8 @@
 $(document).ready(function(){
-    atualizarTabela();
     carregarTipos();
+    atualizarTabela();
 
     $("#btnUpdate").click(function(){
-alert("teste");
         $.ajax({
             url: "controle/produtocontrole.php",
             type:"POST",
@@ -11,17 +10,17 @@ alert("teste");
                 acao : "alterar",
                 nome: $("#nomeup").val(),
                 descricao: $("#descricaoup").val(),
-                fk_id_tipoEmpresa: $("#tipoEmpresasup").val() ,
-                id: $("#idProdutosup").val()
+                fk_id_tipoempresa: $("#tipoEmpresaup").val(),
+                idproduto: $("#idProdutoup").val()
             },
             success: function(resultado){
-                alertify.success("Cadastro do produto concluido com sucesso!");
+                alertify.success("Cadastro atualizado com sucesso!");
                 $("#myModal").modal("hide");
                 atualizarTabela();
                 $("#nomeup").val("");
                 $("#descricaoup").val("");
                 $("#tipoEmpresaup").val("1");
-                $("#idprodutoup").val("");
+                $("#idProdutoup").val("");
             }
         });
     });
@@ -32,7 +31,7 @@ alert("teste");
             type: "POST",
             data:{
                 acao : "pegarPorId",
-                id: $(this).attr("idProduto")
+                idproduto: $(this).attr("idproduto")
             },
             success: function(resultado){
                 var resposta = JSON.parse(resultado);
@@ -47,13 +46,13 @@ alert("teste");
     });
 
     $("#corpoTabela").on("click" , ".btnExcluir", function(){
-confirm("Você deseja excluir o "+$(this).attr("idProduto")+"?",
+        alertify.confirm("Você deseja excluir o " + $(this).attr("idproduto") + "?",
         ()=>{
             $.ajax({
                 url: "controle/produtocontrole.php",
                 type: "POST",
                 data:{
-                    id: $(this).attr("idProduto"),
+                    idproduto: $(this).attr("idproduto"),
                     acao : "excluir"
                 },
                 success: function(result){
@@ -61,7 +60,6 @@ confirm("Você deseja excluir o "+$(this).attr("idProduto")+"?",
                 }
             });
         });
-        /**/
     });
 
     $("#btnCadastrar").click(function(){
@@ -69,18 +67,27 @@ confirm("Você deseja excluir o "+$(this).attr("idProduto")+"?",
             url: "controle/produtocontrole.php",
             type: "POST",
             data:{
-                nome: $("#nome").val() ,
-                descricao:  $("#descricao").val() ,
+                nome: $("#nome").val(),
+                descricao:  $("#descricao").val(),
                 fk_id_tipoempresa: $("#tipoEmpresa").val(),
                 acao : "inserir"
             },
-            success: function(result){
-                console.log(result);
+            success: function(){
                 $("#nome").val("");
                 $("#descricao").val("");
                 atualizarTabela();
             }
         });
+    });
+
+    $("#btnPesquisar").click(function(){
+        var pesquisa = $("#pesquisaProduto").val();
+        pesquisarProdutos(pesquisa);
+    });
+
+    $("#btnLimpar").click(function(){
+        $("#pesquisaProduto").val("");
+        atualizarTabela();
     });
 });
 
@@ -92,6 +99,7 @@ function carregarTipos(){
             acao : "pegarTipos"
         },
         success: function(result){
+            console.log("result", result); 
             var lista = JSON.parse(result);
             $("#tipoEmpresa").html("");
             for(i=0; i< lista.length; i++){
@@ -104,10 +112,10 @@ function carregarTipos(){
                 var opcao = "<option value='"+lista[i].id+"'>"+lista[i].nome+"</option>";
                 $("#tipoEmpresaup").append(opcao);
             }
-
         }
     });
 }
+
 function atualizarTabela(){
     $.ajax({
         url: "controle/produtocontrole.php",
@@ -116,17 +124,35 @@ function atualizarTabela(){
             acao: "pegarTodos"
         },
         success: function(result){
-            console.log(result);
             var lista = JSON.parse(result);
             $("#corpoTabela").html("");
-            for(i=0; i < lista.length; i++){
-                var linha = "<tr>";
-                linha = linha + "<td>"+lista[i].nome+"</td>";
-                linha = linha + "<td>"+lista[i].descricao+"</td>";
-                linha = linha + "<td>"+lista[i].nometipo+"</td>";
-                linha = linha + "<td><button title='Excluir "+lista[i].nome+"' class='btn btn-danger btnExcluir' idproduto='"+lista[i].id+"'><span class='teste teste-x' title='icon name' aria-hidden='true'></span></button> <button title='Alterar "+lista[i].nome+"' class='btn btn-warning btnAlterar' idProduto='"+lista[i].id+"'><span class='oi oi-loop-circular' title='icon name' aria-hidden='true'></span></button></td>";
-                linha = linha + "</tr>";
-                $("#corpoTabela").append(linha);
+        }
+    });
+}
+
+function pesquisarProdutos(pesquisa){
+    $.ajax({
+        url: "controle/produtocontrole.php",
+        type: "POST",
+        data:{
+            acao: "pesquisarProduto",
+            nome: pesquisa
+        },
+        success: function(result){
+            var lista = JSON.parse(result);
+            $("#corpoTabela").html("");
+            if (lista.length === 0) {
+                $("#corpoTabela").append("<tr><td colspan='5' class='text-center'>Nenhum resultado encontrado.</td></tr>");
+            } else {
+                for(i=0; i < lista.length; i++){
+                    var linha = "<tr>";
+                    linha += "<td>"+lista[i].nome+"</td>";
+                    linha += "<td>"+lista[i].descricao+"</td>";
+                    linha += "<td>"+lista[i].nometipo+"</td>";
+                    linha += "<td><button title='Excluir "+lista[i].nome+"' class='btn btn-danger btnExcluir' idproduto='"+lista[i].id+"'><span class='oi oi-x' title='icon name' aria-hidden='true'></span></button> <button title='Alterar "+lista[i].nome+"' class='btn btn-warning btnAlterar' idproduto='"+lista[i].id+"'><span class='oi oi-loop-circular' title='icon name' aria-hidden='true'></span></button></td>";
+                    linha += "</tr>";
+                    $("#corpoTabela").append(linha);
+                }
             }
         }
     });

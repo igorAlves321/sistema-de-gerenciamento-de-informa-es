@@ -11,12 +11,12 @@
                     <input type="hidden" id="idProdutoup" >
                     <div class="mb-3 mt-3">
                         <label for="nomeup" class="form-label">Nome:</label>
-                        <input type="text" class="form-control" id="nomeup" 
+                        <input type="text" class="form-control" idproduto="nomeup" 
                                                     placeholder="Digite o nome do produto">
                     </div>
                     <div class="mb-3 mt-3">
                         <label for="descricaoup" class="form-label">Descricao:</label>
-                        <input type="text" class="form-control" id="descricaoup" placeholder="Digite uma descrição">
+                        <input type="text" class="form-control" idproduto="descricaoup" placeholder="Digite uma descrição">
                     </div>
                     <div class="mb-3 mt-3">
 

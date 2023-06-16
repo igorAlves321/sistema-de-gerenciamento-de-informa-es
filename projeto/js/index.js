@@ -1,185 +1,169 @@
-$(document).ready(function() {
+$(document).ready(function(){
+    carregarTipos();
+    atualizarTabela();
 
-  carregarTipos();
-
-  $("#btnPesquisar").click(function() {
-    var nomeEmpresa = $("#pesquisaEmpresa").val();
-    pesquisarEmpresas(nomeEmpresa);
-  });
-
-  $("#corpoTabela").on("click", ".btnAlterar", function() {
-    var idEmpresa = $(this).attr("idEmpresa");
-    pegarEmpresaPorId(idEmpresa);
-  });
-
-  $("#corpoTabela").on("click", ".btnExcluir", function() {
-    var idEmpresa = $(this).attr("idEmpresa");
-    excluirEmpresa(idEmpresa);
-  });
-
-  $("#btnCadastrar").click(function() {
-    cadastrarEmpresa();
-  });
-
-  function carregarTipos() {
-    $.ajax({
-      url: "controle/tipoempresacontrole.php",
-      type: "POST",
-      data: {
-        acao: "pegarTipos"
-      },
-      success: function(result) {
-        var lista = JSON.parse(result);
-
-        $("#tipoEmpresa").html("");
-        for (var i = 0; i < lista.length; i++) {
-          var opcao = "<option value='" + lista[i].id + "'>" + lista[i].nome + "</option>";
-          $("#tipoEmpresa").append(opcao);
-        }
-      }
+    $("#btnUpdate").click(function(){
+        $.ajax({
+            url: "controle/empresacontrole.php",
+            type:"POST",
+            data:{
+                acao : "alterar",
+                nome: $("#nomeup").val(),
+                telefone: $("#telefoneup").val(),
+                email: $("#emailup").val(),
+                fk_id_tipoempresa: $("#tipoEmpresaup").val(),
+                id: $("#idEmpresaup").val()
+            },
+            success: function(resultado){
+                alertify.success("Cadastro atualizado com sucesso!");
+                $("#myModal").modal("hide");
+                atualizarTabela();
+                $("#nomeup").val("");
+                $("#telefoneup").val("");
+                $("#emailup").val("");
+                $("#tipoEmpresaup").val("1");
+                $("#idEmpresaup").val("");
+            }
+        });
     });
-  }
 
-  function atualizarTabela() {
-    $.ajax({
-      url: "controle/empresacontrole.php",
-      type: "POST",
-      data: {
-        acao: "pegarTodos"
-      },
-      success: function(result) {
-        var lista = JSON.parse(result);
-
-        $("#corpoTabela").html("");
-        for (var i = 0; i < lista.length; i++) {
-          var linha = "<tr>";
-          linha += "<td>" + lista[i].nome + "</td>";
-          linha += "<td>" + lista[i].telefone + "</td>";
-          linha += "<td>" + lista[i].email + "</td>";
-          linha += "<td>" + lista[i].senha + "</td>";
-          linha += "<td>" + lista[i].nometipo + "</td>";
-          linha +=
-            "<td><button title='Excluir " +
-            lista[i].nome +
-            "' class='btn btn-danger btnExcluir' idEmpresa='" +
-            lista[i].id +
-            "'><span class='oi oi-x' title='icon name' aria-hidden='true'></span></button> <button title='Alterar " +
-            lista[i].nome +
-            "' class='btn btn-warning btnAlterar' idEmpresa='" +
-            lista[i].id +
-            "'><span class='oi oi-loop-circular' title='icon name' aria-hidden='true'></span></button></td>";
-          linha += "</tr>";
-          $("#corpoTabela").append(linha);
-        }
-      }
+    $("#corpoTabela").on("click", ".btnAlterar", function(){
+        $.ajax({
+            url: "controle/empresacontrole.php",
+            type: "POST",
+            data:{
+                acao : "pegarPorId",
+                id: $(this).attr("idempresa")
+            },
+            success: function(resultado){
+                var resposta = JSON.parse(resultado);
+                var empresa = resposta[0];
+                $("#nomeup").val(empresa.nome);
+                $("#telefoneup").val(empresa.telefone);
+                $("#emailup").val(empresa.email);
+                $("#tipoEmpresaup").val(empresa.fk_id_tipoempresa)
+                $("#idEmpresaup").val(empresa.id);
+                $("#myModal").modal("show");
+            }
+        });
     });
-  }
 
-function pesquisarEmpresas(nomeEmpresa) {
-  $.ajax({
-    url: "controle/empresacontrole.php",
-    type: "POST",
-    data: {
-      acao: "pesquisarEmpresas",
-      pesquisa: nomeEmpresa
-    },
-    success: function(result) {
-      var lista = JSON.parse(result);
-      $("#corpoTabela").html("");
-      if (lista.length === 0) {
-        $("#corpoTabela").append("<tr><td colspan='5' class='text-center'>Nenhum resultado encontrado.</td></tr>");
-      } else {
-        for (var i = 0; i < lista.length; i++) {
-          var linha = "<tr>";
-          linha += "<td>" + lista[i].nome + "</td>";
+    $("#corpoTabela").on("click" , ".btnExcluir", function(){
+        alertify.confirm("Você deseja excluir o " + $(this).attr("idempresa") + "?",
+        ()=>{
+            $.ajax({
+                url: "controle/empresacontrole.php",
+                type: "POST",
+                data:{
+                    id: $(this).attr("idempresa"),
+                    acao : "excluir"
+                },
+                success: function(result){
+                    atualizarTabela();
+                }
+            });
+        });
+    });
 
+    $("#btnCadastrar").click(function(){
+        $.ajax({
+            url: "controle/empresacontrole.php",
+            type: "POST",
+            data:{
+                nome: $("#nome").val(),
+                telefone:  $("#telefone").val(),
+                email:  $("#email").val(),
+                fk_id_tipoempresa: $("#tipoEmpresa").val(),
+                senha: $("#senha").val(),
+                acao : "inserir"
+            },
+            success: function(){
+                $("#nome").val("");
+                $("#telefone").val("");
+                $("#email").val("");
+                $("#senha").val("");
+                atualizarTabela();
+            }
+        });
+    });
 
+    $("#btnPesquisar").click(function(){
+        var pesquisa = $("#pesquisaEmpresa").val();
+        pesquisarEmpresas(pesquisa);
+    });
 
+    $("#btnLimpar").click(function(){
+        $("#pesquisaEmpresa").val("");
+        atualizarTabela();
+    });
+});
 
-          linha += "<td>" + lista[i].telefone + "</td>";
-          linha += "<td>" + lista[i].email + "</td>";
-          linha += "<td>" + lista[i].senha + "</td>";
-          linha += "<td>" + lista[i].nometipo + "</td>";
-          linha +=
-            "<td><button title='Excluir " +
-            lista[i].nome +
-            "' class='btn btn-danger btnExcluir' idEmpresa='" +
-            lista[i].id +
-            "'><span class='oi oi-x' title='icon name' aria-hidden='true'></span></button> <button title='Alterar " +
-            lista[i].nome +
-            "' class='btn btn-warning btnAlterar' idEmpresa='" +
-            lista[i].id +
-            "'><span class='oi oi-loop-circular' title='icon name' aria-hidden='true'></span></button></td>";
-          linha += "</tr>";
+function carregarTipos(){
+    console.log("carregarTipos called"); // Verifique se essa mensagem aparece no console
+    $.ajax({
+        url: "controle/tipoempresacontrole.php",
+        type: "POST",
+        data:{
+            acao : "pegarTipos"
+        },
+        success: function(result){
+            console.log("result", result); 
+            var lista = JSON.parse(result);
+            $("#tipoEmpresa").html("");
+            for(i=0; i< lista.length; i++){
+                var opcao = "<option value='"+lista[i].id+"'>"+lista[i].nome+"</option>";
+                $("#tipoEmpresa").append(opcao);
+            }
 
-          $("#corpoTabela").append(linha);
+            $("#tipoEmpresaup").html("");
+            for(i=0; i< lista.length; i++){
+                var opcao = "<option value='"+lista[i].id+"'>"+lista[i].nome+"</option>";
+                $("#tipoEmpresaup").append(opcao);
+            }
         }
-      }
-    }
-  });
+    });
 }
 
-  function pegarEmpresaPorId(idEmpresa) {
+function atualizarTabela(){
     $.ajax({
-      url: "controle/empresacontrole.php",
-      type: "POST",
-      data: {
-        acao: "pegarPorId",
-        id: idEmpresa
-      },
-      success: function(result) {
-        var resposta = JSON.parse(result);
-        var empresa = resposta[0];
-        $("#nomeup").val(empresa.nome);
-        $("#telefoneup").val(empresa.telefone);
-        $("#emailup").val(empresa.email);
-        $("#senhaup").val(empresa.senha);
-        $("#tipoEmpresaup").val(empresa.fk_id_tipoempresa);
-        $("#idEmpresaup").val(empresa.id);
-        $("#myModal").modal("show");
-      }
+        url: "controle/empresacontrole.php",
+        type: "POST",
+        data:{
+            acao: "pegarTodos"
+        },
+        success: function(result){
+            var lista = JSON.parse(result);
+            $("#corpoTabela").html("");
+            // tabela está vazia, sem elementos
+        }
     });
-  }
+}
 
-  function excluirEmpresa(idEmpresa) {
-    alertify.confirm(
-      "Você deseja excluir o " + idEmpresa + "?",
-      () => {
-        $.ajax({
-          url: "controle/empresacontrole.php",
-          type: "POST",
-          data: {
-            id: idEmpresa,
-            acao: "excluir"
-          },
-          success: function(result) {
-            atualizarTabela();
-          }
-        });
-      },
-      () => {}
-    );
-  }
-
-  function cadastrarEmpresa() {
+function pesquisarEmpresas(pesquisa){
     $.ajax({
-      url: "controle/empresacontrole.php",
-      type: "POST",
-      data: {
-        nome: $("#nome").val(),
-        telefone: $("#telefone").val(),
-        email: $("#email").val(),
-        fk_id_tipoempresa: $("#tipoEmpresa").val(),
-        senha: $("#senha").val(),
-        acao: "inserir"
-      },
-      success: function(result) {
-        $("#nome").val("");
-        $("#telefone").val("");
-        $("#email").val("");
-        $("#senha").val("");
-        atualizarTabela();
-      }
+        url: "controle/empresacontrole.php",
+        type: "POST",
+        data:{
+            acao: "pesquisarEmpresa",
+            nome: pesquisa
+        },
+        success: function(result){
+            var lista = JSON.parse(result);
+            $("#corpoTabela").html("");
+            if (lista.length === 0) {
+                $("#corpoTabela").append("<tr><td colspan='5' class='text-center'>Nenhum resultado encontrado.</td></tr>");
+            } else {
+                for(i=0; i < lista.length; i++){
+                    var linha = "<tr>";
+                    linha += "<td>"+lista[i].nome+"</td>";
+                    linha += "<td>"+lista[i].telefone+"</td>";
+                    linha += "<td>"+lista[i].email+"</td>";
+                    linha += "<td>"+lista[i].nometipo+"</td>";
+                    linha += "<td><button title='Excluir "+lista[i].nome+"' class='btn btn-danger btnExcluir' idempresa='"+lista[i].id+"'><span class='oi oi-x' title='icon name' aria-hidden='true'></span></button> <button title='Alterar "+lista[i].nome+"' class='btn btn-warning btnAlterar' idempresa='"+lista[i].id+"'><span class='oi oi-loop-circular' title='icon name' aria-hidden='true'></span></button></td>";
+                    linha += "</tr>";
+                    $("#corpoTabela").append(linha);
+                }
+            }
+        }
     });
-  }
-});
+}

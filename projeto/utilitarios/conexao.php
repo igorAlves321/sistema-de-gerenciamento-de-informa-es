@@ -13,7 +13,7 @@
    		public function conectar()
    		{
             try{
-               self::$conn = new PDO('mysql:host=localhost;dbname=sistema', 'root', '');
+               self::$conn = new PDO('mysql:host=localhost;dbname=final', 'root', '');
             }
    			catch(PDOException $e){
        			echo $e->getMessage();

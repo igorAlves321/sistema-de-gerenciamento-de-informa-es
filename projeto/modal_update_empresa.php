@@ -23,7 +23,9 @@
                         <input type="email" class="form-control" id="emailup" 
                                                     placeholder="Digite seu email">
                     </div>
-                    <select id="tipoEmpresaup"  class="form-select mb-3" > 
+<select id="tipoEmpresa" class="form-select mb-3">
+</select>
+
                     </select>
                 </div>
                 <!-- Modal footer -->

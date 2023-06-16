@@ -17,31 +17,31 @@
         <div class="row">
             <div class="col-2"></div>
             <div class="col-12 col-sm-8">
-                <h1>Olá <?php echo $_SESSION["nome"]; ?></h1>
-                <a href="sair.php">Sair</a>
-                <div class="mb-3 mt-3">
-                    <label for="nome" class="form-label">Nome:</label>
-                    <input type="text" class="form-control" id="nome" 
+            <h1>Olá <?php echo $_SESSION["nome"]; ?></h1>
+        <a href="sair.php">Sair</a>
+        <div class="mb-3 mt-3">
+            <label for="nome" class="form-label">Nome:</label>
+            <input type="text" class="form-control" id="nome" 
                                         placeholder="Digite o nome do produto">
-                </div>
-                <div class="mb-3 mt-3">
-                    <label for="descricao" class="form-label">Descricao:</label>
-                    <input type="text" class="form-control" id="descricao" placeholder="Digite uma descrição para o produto">
-                </div>
-                <select id="tipoEmpresa"  class="form-select mb-3" > 
-                </select>
-                <button type="button" class="btn btn-info mb-3" id="btnCadastrar">Cadastrar</button>
-                <!-- Botão de voltar adicionado -->
-                <div class="text-center mt-4">
-                    <a href="index.php" class="btn btn-primary">Voltar</a>
-                </div>
-            </div>
+        </div>
+        <div class="mb-3 mt-3">
+            <label for="descricao" class="form-label">Descricao:</label>
+            <input type="text" class="form-control" id="descricao" placeholder="Digite uma descrição para o produto">
+        </div>
+        <div class="mb-3 mt-3">
+
+        <select id="tipoEmpresa"  class="form-select mb-3" > 
+        </select>
+        <button  type="button" class="btn btn-info" id="btnCadastrar">Cadastrar</button>
+        </div>
+        </div>
             <div class="col-2"></div>
         </div>
+       
     </div>
-    <script src="js/jquery.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
-    <script src="js/index.js"></script>
 </body>
+<script src="js/jquery.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+<script src="js/produto.js"></script>
 </html>

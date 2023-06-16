@@ -8,7 +8,7 @@
         }
 
         function determinarAcao($acao){
-           //inserir, alterar, excluir, pegarTodos, pegarPorId, logar 
+           //inserir, alterar, excluir, pegarTodos, pegarPorId, pesquisarProduto
             if($acao == "inserir")
                 echo $this->inserir();
             else if($acao == "alterar")
@@ -19,28 +19,27 @@
                 echo $this->pegarTodos();
             else if($acao == "pegarPorId")
                 echo $this->pegarPorId();
-            else if($acao == "logar")
-                echo $this->logar();
+            else if($acao == "pesquisarProduto")
+                echo $this->pesquisarProduto();
         }
 
         function inserir(){
             $this->produto->nome = $_POST["nome"];
             $this->produto->descricao = $_POST["descricao"];
             $this->produto->fk_id_tipoempresa = $_POST["fk_id_tipoempresa"];
-
             $this->produto->inserir();
 
         }
         function alterar(){
             $this->produto->nome = $_POST["nome"];
             $this->produto->descricao = $_POST["descricao"];
-            $this->produto->id = $_POST["id"];
+            $this->produto->idproduto = $_POST["idproduto"];
             $this->produto->fk_id_tipoempresa = $_POST["fk_id_tipoempresa"];
 
             $this->produto->alterar();
         }
         function excluir(){
-            $this->produto->id = $_POST["id"];
+            $this->produto->idproduto = $_POST["idproduto"];
             $this->produto->excluir();
         }
 
@@ -49,14 +48,13 @@
         }
 
         function pegarPorId(){
-            $this->produto->id = $_POST["id"];
+            $this->produto->idproduto = $_POST["idproduto"];
             return $this->produto->pegarPorId();
         }
 
-        function logar(){
+        function pesquisarProduto(){
             $this->produto->nome = $_POST["nome"];
-            $this->produto->descricao = $_POST["descricao"];
-            return $this->produto->logar();
+            return $this->produto->pesquisarProduto($this->produto->nome);
         }
     }
 

@@ -54,10 +54,6 @@ include_once("testelogin.php");
                     </tbody>
                 </table>
 
-                <div class="text-center">
-                    <button class='btn btn-primary btnExcluir'><span class='oi oi-thumb-up' title='icon name' aria-hidden='true'></span></button>
-                </div>
-
                 <div class="text-center mt-4">
                     <a href="index.php" class="btn btn-primary">Voltar</a>
                 </div>

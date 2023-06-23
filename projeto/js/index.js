@@ -99,7 +99,7 @@ $(document).ready(function(){
 });
 
 function carregarTipos(){
-    console.log("carregarTipos called"); // Verifique se essa mensagem aparece no console
+
     $.ajax({
         url: "controle/tipoempresacontrole.php",
         type: "POST",
@@ -124,7 +124,12 @@ function carregarTipos(){
     });
 }
 
+function limparTabela() {
+    $("#corpoTabela").html("");
+}
+
 function atualizarTabela(){
+    limparTabela();
     $.ajax({
         url: "controle/empresacontrole.php",
         type: "POST",
@@ -133,13 +138,26 @@ function atualizarTabela(){
         },
         success: function(result){
             var lista = JSON.parse(result);
-            $("#corpoTabela").html("");
-            // tabela está vazia, sem elementos
+            if (lista.length === 0) {
+                $("#corpoTabela").append("<tr><td colspan='5' class='text-center'>Nenhum resultado encontrado.</td></tr>");
+            } else {
+                for(i=0; i < lista.length; i++){
+                    var linha = "<tr>";
+                    linha += "<td>"+lista[i].nome+"</td>";
+                    linha += "<td>"+lista[i].telefone+"</td>";
+                    linha += "<td>"+lista[i].email+"</td>";
+                    linha += "<td>"+lista[i].nometipo+"</td>";
+                    linha += "<td><button title='Excluir "+lista[i].nome+"' class='btn btn-danger btnExcluir' idempresa='"+lista[i].id+"'><span class='oi oi-x' title='icon name' aria-hidden='true'></span></button> <button title='Alterar "+lista[i].nome+"' class='btn btn-warning btnAlterar' idempresa='"+lista[i].id+"'><span class='oi oi-loop-circular' title='icon name' aria-hidden='true'></span></button></td>";
+                    linha += "</tr>";
+                    $("#corpoTabela").append(linha);
+                }
+            }
         }
     });
 }
 
 function pesquisarEmpresas(pesquisa){
+    limparTabela();
     $.ajax({
         url: "controle/empresacontrole.php",
         type: "POST",
@@ -149,7 +167,6 @@ function pesquisarEmpresas(pesquisa){
         },
         success: function(result){
             var lista = JSON.parse(result);
-            $("#corpoTabela").html("");
             if (lista.length === 0) {
                 $("#corpoTabela").append("<tr><td colspan='5' class='text-center'>Nenhum resultado encontrado.</td></tr>");
             } else {

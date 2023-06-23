@@ -73,7 +73,7 @@
             if( count($resultado) > 0){
                 $_SESSION["logado"] = "1";
                 $_SESSION["nome"] = $resultado[0]["nome"];
-                $_SESSION["empresa_id"] = $resultado[0]["id"];  // linha adicionada
+$_SESSION["idempresa"] = $resultado[0]["id"];
                 return "1";
             }else{
                 return "0";

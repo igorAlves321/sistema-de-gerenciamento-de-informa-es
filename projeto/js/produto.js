@@ -1,6 +1,5 @@
 $(document).ready(function(){
     carregarTipos();
-    atualizarTabela();
 
     $("#btnUpdate").click(function(){
         $.ajax({
@@ -10,8 +9,9 @@ $(document).ready(function(){
                 acao : "alterar",
                 nome: $("#nomeup").val(),
                 descricao: $("#descricaoup").val(),
-                fk_id_tipoempresa: $("#tipoEmpresaup").val(),
-                idproduto: $("#idProdutoup").val()
+                fk_id_tipoproduto: $("#tipoProdutoup").val(),
+                idproduto: $("#idProdutoup").val(),
+                idempresa: $("#idempresa").val()
             },
             success: function(resultado){
                 alertify.success("Cadastro atualizado com sucesso!");
@@ -19,26 +19,27 @@ $(document).ready(function(){
                 atualizarTabela();
                 $("#nomeup").val("");
                 $("#descricaoup").val("");
-                $("#tipoEmpresaup").val("1");
+                $("#tipoProdutoup").val("1");
                 $("#idProdutoup").val("");
             }
         });
     });
 
-    $("#corpoTabela").on("click", ".btnAlterar", function(){
+    $("#corpoTabela").on("click" , ".btnAlterar", function(){
         $.ajax({
             url: "controle/produtocontrole.php",
             type: "POST",
             data:{
                 acao : "pegarPorId",
-                idproduto: $(this).attr("idproduto")
+                idproduto: $(this).attr("idproduto"),
+                idempresa: $("#idempresa").val()
             },
             success: function(resultado){
                 var resposta = JSON.parse(resultado);
                 var produto = resposta[0];
                 $("#nomeup").val(produto.nome);
                 $("#descricaoup").val(produto.descricao);
-                $("#tipoEmpresaup").val(produto.fk_id_tipoempresa)
+                $("#tipoProdutoup").val(produto.fk_id_tipoproduto);
                 $("#idProdutoup").val(produto.id);
                 $("#myModal").modal("show");
             }
@@ -53,6 +54,7 @@ $(document).ready(function(){
                 type: "POST",
                 data:{
                     idproduto: $(this).attr("idproduto"),
+                    idempresa: $("#idempresa").val(),
                     acao : "excluir"
                 },
                 success: function(result){
@@ -69,7 +71,8 @@ $(document).ready(function(){
             data:{
                 nome: $("#nome").val(),
                 descricao:  $("#descricao").val(),
-                fk_id_tipoempresa: $("#tipoEmpresa").val(),
+                fk_id_tipoproduto: $("#tipoProduto").val(),
+                idempresa: $("#idempresa").val(),
                 acao : "inserir"
             },
             success: function(){
@@ -87,73 +90,74 @@ $(document).ready(function(){
 
     $("#btnLimpar").click(function(){
         $("#pesquisaProduto").val("");
-        atualizarTabela();
+        limparTabela();
     });
-});
 
-function carregarTipos(){
-    $.ajax({
-        url: "controle/tipoempresacontrole.php",
-        type: "POST",
-        data:{
-            acao : "pegarTipos"
-        },
-        success: function(result){
-            console.log("result", result); 
-            var lista = JSON.parse(result);
-            $("#tipoEmpresa").html("");
-            for(i=0; i< lista.length; i++){
-                var opcao = "<option value='"+lista[i].id+"'>"+lista[i].nome+"</option>";
-                $("#tipoEmpresa").append(opcao);
-            }
+    function limparTabela(){
+        $("#corpoTabela").html("");
+    }
 
-            $("#tipoEmpresaup").html("");
-            for(i=0; i< lista.length; i++){
-                var opcao = "<option value='"+lista[i].id+"'>"+lista[i].nome+"</option>";
-                $("#tipoEmpresaup").append(opcao);
-            }
-        }
-    });
-}
+    function carregarTipos(){
+        $.ajax({
+            url: "controle/tipoprodutocontrole.php",
+            type: "POST",
+            data:{
+                acao : "pegarTipos",
+                idempresa: $("#idempresa").val()
+            },
+            success: function(result){
+                var lista = JSON.parse(result);
+                $("#tipoProduto").html("");
+                for(i=0; i< lista.length; i++){
+                    var opcao = "<option value='"+lista[i].id+"'>"+lista[i].nome+"</option>";
+                    $("#tipoProduto").append(opcao);
+                }
 
-function atualizarTabela(){
-    $.ajax({
-        url: "controle/produtocontrole.php",
-        type: "POST",
-        data:{
-            acao: "pegarTodos"
-        },
-        success: function(result){
-            var lista = JSON.parse(result);
-            $("#corpoTabela").html("");
-        }
-    });
-}
-
-function pesquisarProdutos(pesquisa){
-    $.ajax({
-        url: "controle/produtocontrole.php",
-        type: "POST",
-        data:{
-            acao: "pesquisarProduto",
-            nome: pesquisa
-        },
-        success: function(result){
-            var lista = JSON.parse(result);
-            $("#corpoTabela").html("");
-            if (lista.length === 0) {
-                $("#corpoTabela").append("<tr><td colspan='5' class='text-center'>Nenhum resultado encontrado.</td></tr>");
-            } else {
-                for(i=0; i < lista.length; i++){
-                    var linha = "<tr>";
-                    linha += "<td>"+lista[i].nome+"</td>";
-                    linha += "<td>"+lista[i].descricao+"</td>";
-                    linha += "<td>"+lista[i].nometipo+"</td>";
-                    linha += "<td><button title='Excluir "+lista[i].nome+"' class='btn btn-danger btnExcluir' idproduto='"+lista[i].id+"'><span class='oi oi-x' title='icon name' aria-hidden='true'></span></button> <button title='Alterar "+lista[i].nome+"' class='btn btn-warning btnAlterar' idproduto='"+lista[i].id+"'><span class='oi oi-loop-circular' title='icon name' aria-hidden='true'></span></button></td>";
-                    linha += "</tr>";
-                    $("#corpoTabela").append(linha);
+                $("#tipoProdutoup").html("");
+                for(i=0; i< lista.length; i++){
+                    var opcao = "<option value='"+lista[i].id+"'>"+lista[i].nome+"</option>";
+                    $("#tipoProdutoup").append(opcao);
                 }
             }
+        });
+    }
+
+    function atualizarTabela(){
+        var pesquisa = $("#pesquisaProduto").val();
+        if (pesquisa === "") {
+            limparTabela();
+        } else {
+            pesquisarProdutos(pesquisa);
         }
-    });
-}
+    }
+
+    function pesquisarProdutos(pesquisa){
+        limparTabela();
+        $.ajax({
+            url: "controle/produtocontrole.php",
+            type: "POST",
+            data:{
+                acao: "pesquisarProdutos",
+                nome: pesquisa,
+                idempresa: $("#idempresa").val()
+            },
+            success: function(result){
+                var lista = JSON.parse(result);
+                if (lista.length === 0) {
+                    $("#corpoTabela").html("<tr><td colspan='4' class='text-center'>Nenhum resultado encontrado.</td></tr>");
+                } else {
+                    for(i=0; i < lista.length; i++){
+                        var linha = "<tr>";
+                        linha += "<td>"+lista[i].nome+"</td>";
+                        linha += "<td>"+lista[i].descricao+"</td>";
+                        linha += "<td>"+lista[i].nometipo+"</td>";
+                        linha += "<td>"+lista[i].nomeempresa+"</td>";
+                        linha += "<td><button title='Excluir "+lista[i].nome+"' class='btn btn-danger btnExcluir' idproduto='"+lista[i].idproduto+"'><span class='oi oi-x' title='icon name' aria-hidden='true'></span></button> <button title='Alterar "+lista[i].nome+"' class='btn btn-warning btnAlterar' idproduto='"+lista[i].idproduto+"'><span class='oi oi-loop-circular' title='icon name' aria-hidden='true'></span></button></td>";
+                        linha += "</tr>";
+                        $("#corpoTabela").append(linha);
+                    }
+                }
+            }
+        });
+    }
+});

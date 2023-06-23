@@ -7,11 +7,11 @@ $(document).ready(function(){
 
     $("#btnAlterar").click(function(){
         $.ajax({
-            url: "controle/tipoempresacontrole.php",
+            url: "controle/tipoprodutocontrole.php",
             type: "POST",
             data:{
                 nome: $("#nome").val(),
-                id: $("#idtipoempresa").val(),
+                id: $("#idtipoproduto").val(),
                 acao: "alterar"
             },
             success: function(result){
@@ -22,17 +22,17 @@ $(document).ready(function(){
 
     function carregarDados(){
         $.ajax({
-            url: "controle/tipoempresacontrole.php",
+            url: "controle/tipoprodutocontrole.php",
             type: "POST",
             data:{
-                id: $("#idtipoempresa").val(),
+                id: $("#idtipoproduto").val(),
                 acao: "pegarPorId"
             },
             success: function(result){
                 var lista = JSON.parse(result);
                 if(lista.length > 0) {
-                    var tipoEmpresa = lista[0];
-                    $("#nome").val(tipoEmpresa.nome);
+                    var tipoProduto = lista[0];
+                    $("#nome").val(tipoProduto.nome);
                 }
             }
         });
@@ -40,21 +40,21 @@ $(document).ready(function(){
 
     function carregarTipos(){
         $.ajax({
-            url: "controle/tipoempresacontrole.php",
+            url: "controle/tipoprodutocontrole.php",
             type: "POST",
             data:{
                 acao: "pegarTipos"
             },
             success: function(result){
                 var lista = JSON.parse(result);
-                $("#tipoEmpresa").html("");
+                $("#tipoProduto").html("");
                 if(lista.length > 0) {
                     for(var i = 0; i < lista.length; i++){
                         var opcao = "<option value='" + lista[i].id + "'>" + lista[i].nome + "</option>";
-                        $("#tipoEmpresa").append(opcao);
+                        $("#tipoProduto").append(opcao);
                     }
                 } else {
-                    $("#tipoEmpresa").append("<option>Nenhum tipo de empresa encontrado</option>");
+                    $("#tipoProduto").append("<option>Nenhum tipo de produto encontrado</option>");
                 }
             }
         });

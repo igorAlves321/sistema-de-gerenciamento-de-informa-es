@@ -23,6 +23,7 @@
                         <input type="email" class="form-control" id="emailup" 
                                                     placeholder="Digite seu email">
                     </div>
+                    <label for="tipoEmpresa" class="form-label">Tipo de Empresa:</label>
 <select id="tipoEmpresa" class="form-select mb-3">
 </select>
 

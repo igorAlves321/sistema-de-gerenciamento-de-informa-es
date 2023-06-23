@@ -9,20 +9,20 @@
             $this->tipoEmpresa = new TipoEmpresa();
         }
 
-        function determinarAcao($acao){
-            if($acao == "pegarTipos")
-                echo $this->pegarTipos();
-            else if($acao == "inserir")
-                echo $this->inserir();
-            else if($acao == "alterar")
-                echo $this->alterar();
-            else if($acao == "excluir")
-                echo $this->excluir();
-            else if($acao == "pegarPorId")
-                echo $this->pegarPorId();
-else if($acao == "pesquisarTipo")
-    echo $this->pesquisarTipos();
-        }
+function determinarAcao($acao){
+    if($acao == "pegarTipos")
+        echo $this->pegarTipos();
+    else if($acao == "inserir")
+        echo $this->inserir();
+    else if($acao == "alterar")
+        echo $this->alterar();
+    else if($acao == "excluir")
+        echo $this->excluir();
+    else if($acao == "pegarPorId")
+        echo $this->pegarPorId();
+    else if($acao == "pesquisarTipo")
+        echo $this->pesquisarTipo();
+}
 
         function pegarTipos(){
             return $this->tipoEmpresa->pegarTipos();
@@ -50,9 +50,9 @@ else if($acao == "pesquisarTipo")
         }
 
 function pesquisarTipo(){
-    $this->tipoempresa->nome = $_POST["nome"];
-    return $this->tipoempresa->pesquisarTipo($this->tipoempresa->nome);
-}  
+    $this->tipoEmpresa->nome = $_POST["nome"];
+    return $this->tipoEmpresa->pesquisarTipo($this->tipoEmpresa->nome);
+}
 
     }
 

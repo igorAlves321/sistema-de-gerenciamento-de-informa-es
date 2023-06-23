@@ -17,27 +17,26 @@
         <div class="row">
             <div class="col-2"></div>
             <div class="col-12 col-sm-8">
-            <h1>Olá <?php echo $_SESSION["nome"]; ?></h1>
-        <a href="sair.php">Sair</a>
-        <div class="mb-3 mt-3">
-            <label for="nome" class="form-label">Nome:</label>
-            <input type="text" class="form-control" id="nome" 
-                                        placeholder="Digite o nome do produto">
-        </div>
-        <div class="mb-3 mt-3">
-            <label for="descricao" class="form-label">Descricao:</label>
-            <input type="text" class="form-control" id="descricao" placeholder="Digite uma descrição para o produto">
-        </div>
-        <div class="mb-3 mt-3">
-
-        <select id="tipoEmpresa"  class="form-select mb-3" > 
-        </select>
-        <button  type="button" class="btn btn-info" id="btnCadastrar">Cadastrar</button>
-        </div>
-        </div>
+                <h1>Olá <?php echo $_SESSION["nome"]; ?></h1>
+                <a href="sair.php">Sair</a>
+                <div class="mb-3 mt-3">
+                    <label for="nome" class="form-label">Nome:</label>
+                    <input type="text" class="form-control" id="nome" placeholder="Digite o nome do produto">
+                </div>
+                <div class="mb-3 mt-3">
+                    <label for="descricao" class="form-label">Descricao:</label>
+                    <input type="text" class="form-control" id="descricao" placeholder="Digite uma descrição para o produto">
+                </div>
+                <div class="mb-3 mt-3">
+                    <input type="hidden" id="idempresa" value="<?php echo isset($_SESSION['idempresa']) ? $_SESSION['idempresa'] : ''; ?>">
+                    <label for="tipoProduto" class="form-label">Tipo de Produto:</label>
+                    <select id="tipoProduto" class="form-select mb-3"> 
+                    </select>
+                    <button type="button" class="btn btn-info" id="btnCadastrar">Cadastrar</button>
+                </div>
+            </div>
             <div class="col-2"></div>
         </div>
-       
     </div>
 </body>
 <script src="js/jquery.js"></script>

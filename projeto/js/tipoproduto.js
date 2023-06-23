@@ -1,52 +1,52 @@
 $(document).ready(function(){
     $("#btnUpdate").click(function(){
         $.ajax({
-            url: "controle/tipoempresacontrole.php",
+            url: "controle/tipoprodutocontrole.php",
             type:"POST",
             data:{
                 acao : "alterar",
                 nome: $("#nomeup").val(),
-                id: $("#idTipoEmpresap").val()
+                id: $("#idTipoProdutop").val()
             },
             success: function(resultado){
-                alertify.success("Tipo de empresa atualizado com sucesso!");
+                alertify.success("Tipo de produto atualizado com sucesso!");
                 $("#myModal").modal("hide");
                 $("#nomeup").val("");
-                $("#idTipoEmpresap").val("");
+                $("#idTipoProdutop").val("");
             }
         });
     });
 
     $("#corpoTabela").on("click", ".btnAlterar", function(){
         $.ajax({
-            url: "controle/tipoempresacontrole.php",
+            url: "controle/tipoprodutocontrole.php",
             type: "POST",
             data:{
                 acao : "pegarPorId",
-                id: $(this).attr("idtipoempresa")
+                id: $(this).attr("idtipoproduto")
             },
             success: function(resultado){
                 var resposta = JSON.parse(resultado);
-                var tipoEmpresa = resposta[0];
-                $("#nomeup").val(tipoEmpresa.nome);
-                $("#idTipoEmpresap").val(tipoEmpresa.id);
+                var tipoProduto = resposta[0];
+                $("#nomeup").val(tipoProduto.nome);
+                $("#idTipoProdutop").val(tipoProduto.id);
                 $("#myModal").modal("show");
             }
         });
     });
 
     $("#corpoTabela").on("click" , ".btnExcluir", function(){
-        alertify.confirm("Você deseja excluir o " + $(this).attr("idtipoempresa") + "?",
+        alertify.confirm("Você deseja excluir o " + $(this).attr("idtipoproduto") + "?",
         ()=>{
             $.ajax({
-                url: "controle/tipoempresacontrole.php",
+                url: "controle/tipoprodutocontrole.php",
                 type: "POST",
                 data:{
-                    id: $(this).attr("idtipoempresa"),
+                    id: $(this).attr("idtipoproduto"),
                     acao : "excluir"
                 },
                 success: function(result){
-                    pesquisarTipos($("#pesquisaTipoEmpresa").val());
+                    pesquisarTipos($("#pesquisaTipoProduto").val());
                 }
             });
         });
@@ -54,7 +54,7 @@ $(document).ready(function(){
 
     $("#btnCadastrar").click(function(){
         $.ajax({
-            url: "controle/tipoempresacontrole.php",
+            url: "controle/tipoprodutocontrole.php",
             type: "POST",
             data:{
                 nome: $("#nome").val(),
@@ -62,18 +62,18 @@ $(document).ready(function(){
             },
             success: function(){
                 $("#nome").val("");
-                pesquisarTipos($("#pesquisaTipoEmpresa").val());
+                pesquisarTipos($("#pesquisaTipoProduto").val());
             }
         });
     });
 
     $("#btnPesquisar").click(function(){
-        var pesquisa = $("#pesquisaTipoEmpresa").val();
+        var pesquisa = $("#pesquisaTipoProduto").val();
         pesquisarTipos(pesquisa);
     });
 
     $("#btnLimpar").click(function(){
-        $("#pesquisaTipoEmpresa").val("");
+        $("#pesquisaTipoProduto").val("");
         limparTabela();
     });
 });
@@ -84,7 +84,7 @@ function limparTabela(){
 
 function pesquisarTipos(pesquisa){
     $.ajax({
-        url: "controle/tipoempresacontrole.php",
+        url: "controle/tipoprodutocontrole.php",
         type: "POST",
         data:{
             acao: "pesquisarTipo",
@@ -99,7 +99,7 @@ function pesquisarTipos(pesquisa){
                 for(i=0; i < lista.length; i++){
                     var linha = "<tr>";
                     linha += "<td>"+lista[i].nome+"</td>";
-                    linha += "<td><button title='Excluir "+lista[i].nome+"' class='btn btn-danger btnExcluir' idtipoempresa='"+lista[i].id+"'><span class='oi oi-x' title='icon name' aria-hidden='true'></span></button> <button title='Alterar "+lista[i].nome+"' class='btn btn-warning btnAlterar' idtipoempresa='"+lista[i].id+"'><span class='oi oi-loop-circular' title='icon name' aria-hidden='true'></span></button></td>";
+                    linha += "<td><button title='Excluir "+lista[i].nome+"' class='btn btn-danger btnExcluir' idtipoproduto='"+lista[i].id+"'><span class='oi oi-x' title='icon name' aria-hidden='true'></span></button> <button title='Alterar "+lista[i].nome+"' class='btn btn-warning btnAlterar' idtipoproduto='"+lista[i].id+"'><span class='oi oi-loop-circular' title='icon name' aria-hidden='true'></span></button></td>";
                     linha += "</tr>";
                     $("#corpoTabela").append(linha);
                 }

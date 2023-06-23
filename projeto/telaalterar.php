@@ -31,6 +31,7 @@
             <input type="email" class="form-control" id="email" 
                                         placeholder="Digite seu email">
         </div>
+                    <label for="tipoEmpresa" class="form-label">Tipo de Empresa:</label>
         <select id="tipoEmpresa"> 
         </select>
         <button  type="button" class="btn btn-info" id="btnAlterar">Alterar</button>
